@@ -166,6 +166,15 @@ for SNRdB in SNRdBTest:
     tracer.log("{:.6f}".format(MDR_Stage1), file="MDR_Stage1")
     tracer.log("{:.6f}".format(MDR_Stage2), file="MDR_Stage2")
 
+# Plot result for MDR of two stages
+plt.figure(dpi=300)
+plt.semilogy(SNRdBTest, MDR_Stage1_SNR, color='r', linestyle='-', marker="*", markersize=5)
+plt.semilogy(SNRdBTest, MDR_Stage2_SNR, color='b', linestyle='-', marker="o", markersize=5)
+plt.legend(["Stage1", "Stage2"])
+plt.xlabel("SNR (dB)")
+plt.ylabel("Miss Detection Rate (MDR)")
+plt.grid()
+tracer.store(plt.gcf(), "MDR.png")
 
 # Start Simulation FAR
 print("Simulation for FAR")
@@ -275,15 +284,7 @@ for SNRdB in SNRdBTest:
     print("SNR = {:.1f} dB, FAR Stage 2 = {:.6f}".format(SNRdB, FAR))
     tracer.log("{:.6f}".format(FAR), file="FAR")
 
-plt.figure(dpi=300)
-plt.semilogy(SNRdBTest, MDR_Stage1_SNR, color='r', linestyle='-', marker="*", markersize=5)
-plt.semilogy(SNRdBTest, MDR_Stage2_SNR, color='b', linestyle='-', marker="o", markersize=5)
-plt.legend(["Stage1", "Stage2"])
-plt.xlabel("SNR (dB)")
-plt.ylabel("Miss Detection Rate (MDR)")
-plt.grid()
-tracer.store(plt.gcf(), "MDR.png")
-
+# Plot result for FAR
 plt.figure(dpi=300)
 plt.semilogy(SNRdBTest, FAR_SNR, color='r', linestyle='-', marker="*", markersize=5)
 plt.legend(["FAR"])
