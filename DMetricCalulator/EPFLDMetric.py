@@ -80,7 +80,7 @@ class EPFLDMetricCalculator():
                         node = node // 2
                         depth -= 1
                         # accumulate DMetric
-                        DMetric += np.abs(np.mean(incoming_llr))
+                        DMetric += np.abs(np.sum(incoming_llr))/len(incoming_llr)
                         continue
 
                     # SPC node

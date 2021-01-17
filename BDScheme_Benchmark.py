@@ -13,11 +13,14 @@ import shutil
 parser = argparse.ArgumentParser()
 parser.add_argument("--L", type=int, default=8)
 args = parser.parse_args()
+
 # Simulation Parameters
 L = args.L
+
 # simulation parameter configuration
 numSimulation = 10**4
-SNRdBTest = [0, 1, 2, 3, 4]
+SNRdBTest = [3]
+
 # initialize Trace instance to maintain simulation hyper-parameters and results and images
 experiment_name = "L = {:d}".format(L)
 if os.path.isdir(os.path.join(os.getcwd(), "BD_Benchmark", experiment_name)):
@@ -27,6 +30,7 @@ configure = {"L": L,
              "numSimulation":numSimulation,
              "SNRdBTest":SNRdBTest}
 tracer.store(Config(configure))
+
 # Initialize PDCCH candidate generator and corresponding decoders
 PDCCHGenerator = CandidateGenerator()
 CRCEncoder = CRCEnc(PDCCHGenerator.numCRCBits, PDCCHGenerator.crcPoly)
@@ -69,7 +73,7 @@ for SNRdB in SNRdBTest:
                     dec_information_bits = decoded_bits[:-PDCCHGenerator.numCRCBits]
                     dec_crc = decoded_bits[-PDCCHGenerator.numCRCBits:]
                     crcCheck = CRCEncoder.encode(dec_information_bits)[-PDCCHGenerator.numCRCBits:]
-                    crcCheck[-PDCCHGenerator.numRNTIBits:] = crcCheck[-PDCCHGenerator.numRNTIBits:] ^ RNTI
+                    crcCheck[-PDCCHGenerator.numRNTIBits:] = np.mod(crcCheck[-PDCCHGenerator.numRNTIBits:] + RNTI, 2)
                     if np.all(crcCheck == dec_crc):
                         passedIndex.append(cnt)
                         passedPMs.append(PM)
@@ -79,8 +83,8 @@ for SNRdB in SNRdBTest:
         if numPass == 0:
             numMissDetection += 1
         else:
-            maxPMIndexStage2 = np.argmin(passedPMs)
-            finalCandidateIndex = passedIndex[maxPMIndexStage2]
+            maxPMIndex = np.argmin(passedPMs)
+            finalCandidateIndex = passedIndex[maxPMIndex]
             if finalCandidateIndex != RNTIIndex:
                 numMissDetection += 1
         pbar.set_description("Miss Det = {:d}".format(numMissDetection))
