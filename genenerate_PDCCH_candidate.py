@@ -15,7 +15,7 @@ class CandidateGenerator():
         self.numCandidatePerAggregationLevel = np.array([6, 6, 10])
         self.codewordLengthPerAggregationLevel = np.array([128, 256, 512])
         self.maxInformationLength = 140
-        self.numInformationBits = np.array([32, 57])
+        self.numInformationBits = np.array([16, 57])
         self.numCRCBits = 24
         self.crcPoly = [24, 23, 21, 20, 17, 15, 13, 12, 8, 4, 2, 1, 0]
         self.polarEncoders = []
