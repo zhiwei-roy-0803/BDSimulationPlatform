@@ -58,6 +58,7 @@ class CandidateGenerator():
             RNTIIndex = np.random.randint(low=0, high=self.numCandidates)
         else:
             RNTIIndex = -1
+        RNTIIndex = 0
         RNTI = np.random.randint(low=0, high=2, size=self.numRNTIBits, dtype=np.uint8)
         cnt = 0
         for i in range(self.numAggregationLevel):
