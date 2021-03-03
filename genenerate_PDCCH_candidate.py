@@ -51,15 +51,14 @@ class CandidateGenerator():
             self.messagebits_indicator_set.append(messagebits_indicator_set)
 
 
-    def generate_candidates(self, isRNTI=True):
+    def generate_candidates(self, isRNTI):
         codewords = []
         information_bits = []
         if isRNTI:
             RNTIIndex = np.random.randint(low=0, high=self.numCandidates)
         else:
             RNTIIndex = -1
-        RNTIIndex = 0
-        RNTI = np.random.randint(low=0, high=2, size=self.numRNTIBits, dtype=np.uint8)
+        RNTI = np.random.randint(low=0, high=2, size=self.numRNTIBits, dtype=np.int)
         cnt = 0
         for i in range(self.numAggregationLevel):
             for m in range(2):
@@ -68,8 +67,9 @@ class CandidateGenerator():
                     msg = np.random.randint(low=0, high=2, size=A)
                     msg_crc = self.crcEncoder.encode(msg)
                     if cnt == RNTIIndex:
-                        msg_crc[-self.numRNTIBits:] ^= RNTI
+                        msg_crc[-self.numRNTIBits:] = np.mod(msg_crc[-self.numRNTIBits:] + RNTI, 2)
                     codeword = self.polarEncoders[i][m].encode(msg_crc)
+                    codeword = codeword.astype(np.int)
                     codewords.append(codeword)
                     information_bits.append(msg)
                     cnt += 1

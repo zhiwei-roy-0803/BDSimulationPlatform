@@ -21,7 +21,7 @@ RUN_FAR = args.RUN_FAR
 RUN_MDR = 1 - RUN_FAR
 
 # simulation parameter configuration
-SNRdBTest = [0, 1, 2, 3, 4]
+SNRdBTest = [-3, -2, -1, 0, 1, 2]
 
 # initialize Trace instance to maintain simulation hyper-parameters and results and images
 if RUN_MDR == True:
@@ -87,7 +87,7 @@ if RUN_MDR:
             if numPass == 0:
                 numMissDetection += 1
             else:
-                maxPMIndex = np.argmin(passedPMs)
+                maxPMIndex = int(np.argmin(passedPMs))
                 finalCandidateIndex = passedIndex[maxPMIndex]
                 if finalCandidateIndex != RNTIIndex:
                     numMissDetection += 1

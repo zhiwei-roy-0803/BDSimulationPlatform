@@ -98,7 +98,7 @@ class EPFLDMetricCalculator():
                         node = node // 2
                         depth -= 1
                         # accumulate DMetric
-                        DMetric += (-1)**parity_check * np.min(np.abs(incoming_llr))
+                        # DMetric += (-1)**parity_check * np.min(np.abs(incoming_llr))
                         continue
 
                     temp = 2 ** (n - depth)
